@@ -1,0 +1,313 @@
+ /* =====================
+   VARIABLES GLOBALES
+===================== */
+    :root{
+      --bg: #1B1F1D;
+      --surface: #242926;
+      --border: #3A413C;
+      --ink: #EDEAE0;
+      --muted: #8B9187;
+      --amber: #C98A2B;
+      --surface-2: #2E332F;
+      --olive: #7A8B5C;
+      --blue: #5C7A8A;
+      --brick: #8A4A3D;
+    }
+
+
+/* =====================
+         RESET
+===================== */
+    *{
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body{
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      padding: 32px 20px 80px;
+    }
+
+header{
+  border-bottom: 2px solid var(--border);
+  padding-bottom: 18px;
+  margin-bottom: 22px;
+}
+
+header h1{
+  font-family: 'Big Shoulders Display', sans-serif;
+  font-weight: 900;
+  font-size: 42px;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  line-height: 0.95;
+}
+
+header p{
+  color: var(--muted);
+  font-size: 14px;
+  margin-top: 6px;
+}
+
+.toolbar{
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+input, select{
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 9px 11px;
+}
+
+#search{
+  flex: 1;
+  min-width: 180px;
+}
+
+button{
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  border: 1px solid var(--border);
+  padding: 9px 14px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+button:hover{
+  background: var(--surface-2);
+}
+
+button.primary{
+  background: var(--amber);
+  border-color: var(--amber);
+  color: var(--bg);
+}
+
+input:focus, select:focus, button:focus-visible{
+  outline: 2px solid var(--amber);
+  outline-offset: 1px;
+}
+
+
+/* =====================
+        TABLEAU
+===================== */
+table{
+  width: 100%;
+  border-collapse: collapse;
+}
+
+thead th{
+  text-align:left;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr{
+  border-bottom: 1px solid var(--border);
+}
+
+tbody tr:hover{
+  background: var(--surface);
+}
+
+tbody td{
+  padding: 12px 10px;
+  font-size: 14px;
+}
+
+tbody td:last-child{
+  display: flex;
+  gap: 6px;
+}
+
+tbody td:last-child button{
+  padding: 5px 8px;
+  font-size: 12px;
+}
+
+.contact-links{
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.contact-links a{
+  color: var(--blue);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.contact-links a:hover{
+  text-decoration: underline;
+}
+
+.badge{
+  display: inline-block;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  border-radius: 2px;
+  padding: 5px 8px;
+  border: 1px solid;
+}
+
+.badge[data-s="a_contacter"]{
+  color: var(--muted);
+  border-color: var(--muted);
+}
+
+.badge[data-s="contacte"]{
+  color: var(--olive);
+  border-color: var(--olive);
+  background: rgba(122, 139, 92, 0.12);
+}
+
+.badge[data-s="relance"]{
+  color: var(--amber);
+  border-color: var(--amber);
+  background: rgba(201, 138, 43, 0.12);
+}
+
+.badge[data-s="entretien"]{
+    color: var(--blue);
+    border-color: var(--blue);
+    background: rgba(92, 122, 138, 0.12);
+}
+
+.badge[data-s="refus"]{
+    color: var(--brick);
+    border-color: var(--brick);
+    background: rgba(138, 74, 61, 0.12);
+}
+
+.badge[data-s="accepte"]{
+    color: var(--olive);
+    border-color: var(--olive);
+    font-weight: 600;
+    background: rgba(122, 139, 92, 0.22);
+}
+
+#key-data{
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.stat{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 12px 16px;
+}
+
+.stat .n{
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.stat .l{
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+.overlay{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.hidden{
+  display: none !important;
+}
+
+.modal{
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  width: 100%;
+  max-width: 420px;
+  padding: 22px 24px;
+}
+
+.modal h2{
+  font-family: 'Big Shoulders Display', sans-serif;
+  text-transform: uppercase;
+  font-size: 24px;
+  margin-bottom: 16px;
+}
+
+.field{
+  margin-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.field label{
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+
+.modal-actions{
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+
+/* =====================
+  FENETRE D'IMPORT
+===================== */
+#importText{
+  width: 100%;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 12px;
+  resize: vertical;
+}
+
+.modal p{
+  color: var(--muted);
+  font-size: 13px;
+  margin-bottom: 14px;
+}
+
+
+/* =====================
+  OPTION DE RELANCE
+===================== */
+.relance-date{
+  font-size: 12px;
+}
+
+.relance-date.overdue{
+  color: var(--amber);
+  font-weight: 600;
+}

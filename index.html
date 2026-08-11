@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carnet de prospection</title>
+  <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>Carnet de prospection</h1>
+    <p>Suivi de contacts recruteurs pour ma recherche d'alternance.</p>
+  </header>
+
+  <main>
+    <div id="key-data"></div>
+
+    <section class="toolbar">
+      <input 
+      type="text" 
+      id="search" 
+      placeholder="Rechercher une entreprise...">
+      <select id="filterStatut">
+        <option value="all">Tous statuts</option>
+        <option value="a_contacter">À contacter</option>
+      </select>
+      <button type="button" id="btnImport">Importer</button>
+      <button id="btnNew" class="primary">+ Nouveau contact</button>
+    </section>
+
+    <section class="liste-contacts">
+      <table>
+
+        <thead>
+          <tr>
+            <th>Priorité</th>
+            <th>Entreprise</th>
+            <th>Ville</th>
+            <th>Recruteur</th>
+            <th>Statut</th>
+            <th>Relance</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+
+        <tbody id="tableBody">
+          
+        </tbody>
+
+      </table>
+    </section>
+
+  </main>
+
+  <footer></footer>
+
+  </div>
+
+<div class="overlay hidden" id="modalOverlay">
+  <div class="modal">
+    <h2 id="modalTitle">Nouveau contact</h2>
+    <form id="contactForm">
+
+      <div class="field">
+        <label for="fPriorite">Priorité</label>
+        <select id="fPriorite">
+          <option value="1">1 — Haute</option>
+          <option value="2" selected>2 — Moyenne</option>
+          <option value="3">3 — Basse</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fEntreprise">Entreprise</label>
+        <input type="text" id="fEntreprise" required>
+      </div>
+
+      <div class="field">
+        <label for="fVille">Ville</label>
+        <input type="text" id="fVille">
+      </div>
+
+      <div class="field">
+        <label for="fRecruteur">Recruteur</label>
+        <input type="text" id="fRecruteur">
+      </div>
+
+      <div class="field">
+        <label for="fSite">Site carrière</label>
+        <input type="url" id="fSite" placeholder="https://...">
+      </div>
+
+      <div class="field">
+        <label for="fEmail">E-mail</label>
+        <input type="email" id="fEmail">
+      </div>
+
+      <div class="field">
+        <label for="fTel">Téléphone</label>
+        <input type="tel" id="fTel">
+      </div>
+
+      <div class="field">
+        <label for="fLinkedin">LinkedIn recruteur</label>
+        <input type="url" id="fLinkedin" placeholder="https://linkedin.com/in/...">
+      </div>
+
+      <div class="field">
+        <label for="fStatut">Statut</label>
+        <select id="fStatut">
+          <option value="a_contacter">À contacter</option>
+          <option value="contacte">Contacté</option>
+          <option value="relance">Relance à faire</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="fRelance">À relancer</label>
+        <input type="date" id="fRelance">
+      </div>
+
+      <div class="modal-actions">
+        <button type="button" id="btnCancel">Annuler</button>
+        <button type="submit" class="primary">Enregistrer</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<div class="overlay hidden" id="importOverlay">
+  <div class="modal">
+    <h2>Importer depuis Excel</h2>
+    <p>Collez vos lignes copiées depuis votre tableau (avec l'en-tête : Priorité, Entreprise, Ville, Site carrière, Nom du recruteur, E-mail, Téléphone, LinkedIn recruteur).</p>
+
+    <div class="field">
+      <textarea id="importText" rows="8" placeholder="Collez ici (Ctrl+V)…"></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button type="button" id="btnImportCancel">Annuler</button>
+      <button type="button" id="btnImportGo" class="primary">Importer</button>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
