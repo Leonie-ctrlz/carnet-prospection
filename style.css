@@ -311,3 +311,36 @@ tbody td:last-child button{
   color: var(--amber);
   font-weight: 600;
 }
+
+
+/* =====================
+      CHECKBOX
+===================== */
+.checkbox-row{
+  display: flex;
+  gap: 16px;
+  margin-top: 4px;
+}
+
+.checkbox-row label{
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  text-transform: none;
+}
+
+.checkbox-row input[type="checkbox"]{
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  background: none;
+  accent-color: var(--amber);
+}
+
+.docs-sent{
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}

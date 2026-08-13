@@ -40,6 +40,17 @@ async function saveContacts(){
     return dateStr < aujourdhui;
   }
 
+  function docsEnvoyesHTML(c){
+  const docs = [];
+  if(c.cv) docs.push("CV");
+  if(c.portfolio) docs.push("Portfolio");
+  if(c.github) docs.push("GitHub");
+  if(docs.length === 0) return "";
+
+  const mode = c.modeEnvoi === "form" ? "formulaire" : "e-mail";
+  return `<div class="docs-sent">${docs.join(" · ")} (envoyé par ${mode})</div>`;
+}
+
   function renderTable(){
     const tbody = document.getElementById("tableBody");
     const liste = getFilteredContacts();
@@ -47,7 +58,7 @@ async function saveContacts(){
     tbody.innerHTML= liste.map(c => `
       <tr data-id="${c.id}">
         <td>${c.priorite}</td>
-        <td>${c.entreprise}</td>
+        <td>${c.entreprise}${docsEnvoyesHTML(c)}</td>
         <td>${c.ville}</td>
         <td>
           <div>${c.recruteur || "—"}</div>
@@ -114,6 +125,10 @@ function openModal(contact){
     document.getElementById("fEmail").value = contact.email;
     document.getElementById("fTel").value = contact.telephone;
     document.getElementById("fLinkedin").value = contact.linkedin;
+    document.getElementById("fCv").checked = !!contact.cv;
+    document.getElementById("fPortfolio").checked = !!contact.portfolio;
+    document.getElementById("fGithub").checked = !!contact.github;
+    document.getElementById("fModeEnvoi").value = contact.modeEnvoi || "email";
     document.getElementById("fStatut").value = contact.statut;
     document.getElementById("fRelance").value = contact.dateRelance || "";
   }else{
@@ -243,6 +258,10 @@ document.getElementById("contactForm").addEventListener("submit", async function
     linkedin: document.getElementById("fLinkedin").value,
     statut: document.getElementById("fStatut").value,
     dateRelance: document.getElementById("fRelance").value,
+    cv: document.getElementById("fCv").checked,
+    portfolio: document.getElementById("fPortfolio").checked,
+    github: document.getElementById("fGithub").checked,
+    modeEnvoi: document.getElementById("fModeEnvoi").value,
   };
 
  if(editingId){
