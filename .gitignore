@@ -1,2 +1,5 @@
 *.pdf
 *.xlsx
+.env
+node_modules/
+.idea/

@@ -22,7 +22,7 @@ HTML / CSS / JavaScript vanilla
 ```
    git clone https://github.com/Leonie-ctrlz/carnet-prospection.git
 ```
-2. Ouvrir `index.html` dans un navigateur (ou avec l'extension Live Server de VS Code)
+2. Ouvrir `public/index.html` dans un navigateur (ou avec l'extension Live Server de VS Code)
 
 
 ## Structure du projet
