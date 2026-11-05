@@ -21,8 +21,31 @@ const outils = [
             },
             required: ["url"]
         }
+    },
+    {
+        name: "remplir_fiche",
+        description: "Enregistre la fiche contact extraite de l'offre. À appeler une seule fois, à la fin.",
+        input_schema: {
+            type: "object",
+            properties: {
+                entreprise: { type: "string", description: "Nom de l'entreprise qui recrute" },
+                ville: { type: "string", description: "Ville du poste" },
+                recruteur: { type: "string", description: "Nom de la personne à contacter, vide si absent" },
+                email: { type: "string", description: "E-mail de contact, vide si absent" },
+                telephone: { type: "string", description: "Téléphone, vide si absent" },
+                linkedin: { type: "string", description: "URL LinkedIn du recruteur, vide si absent" },
+                siteCarriere: { type: "string", description: "URL de l'offre ou de la page carrière" }
+            },
+            required: ["entreprise", "ville"]
+        }
     }
 ];
+
+const CONSIGNES = `Tu aides une étudiante à remplir son carnet de prospection d'alternance.
+1. Lis l'offre avec l'outil lire_page.
+2. Appelle ensuite remplir_fiche avec les informations trouvées.
+N'invente jamais une information absente de la page : laisse le champ vide.
+Si la page est illisible, appelle quand même remplir_fiche avec ce que tu sais.`;
 
 // 2. Le vrai code de l'outil, exécuté par TON serveur
 async function lirePage(url) {
@@ -55,17 +78,19 @@ async function executerOutil(nom, parametres) {
 }
 
 // 3. La boucle de l'agent
+// 3. La boucle de l'agent
 app.post("/api/agent", async (req, res) => {
     try {
         const { url } = req.body;
         const messages = [
-            { role: "user", content: `Lis cette offre et résume-la en 3 lignes : entreprise, ville, poste. URL : ${url}` }
+            { role: "user", content: `Voici le lien de l'offre : ${url}` }
         ];
 
         for (let tour = 1; tour <= 5; tour++) {
             const reponse = await client.messages.create({
                 model: "claude-haiku-5-5",
                 max_tokens: 1000,
+                system: CONSIGNES,
                 tools: outils,
                 messages
             });
@@ -73,28 +98,29 @@ app.post("/api/agent", async (req, res) => {
             console.log(`Tour ${tour} : stop_reason = ${reponse.stop_reason}`);
             messages.push({ role: "assistant", content: reponse.content });
 
-            // Claude n'a plus besoin d'outil : c'est sa réponse finale
             if (reponse.stop_reason !== "tool_use") {
-                const texte = reponse.content
-                    .filter(bloc => bloc.type === "text")
-                    .map(bloc => bloc.text)
-                    .join("\n");
-                return res.json({ texte });
+                return res.status(500).json({ erreur: "L'agent s'est arrêté sans remplir la fiche." });
             }
 
-            // Claude veut utiliser un outil : on l'exécute et on lui renvoie le résultat
             const resultats = [];
             for (const bloc of reponse.content) {
-                if (bloc.type === "tool_use") {
-                    console.log(`  → ${bloc.name}(${JSON.stringify(bloc.input)})`);
-                    let contenu;
-                    try {
-                        contenu = await executerOutil(bloc.name, bloc.input);
-                    } catch (err) {
-                        contenu = `Erreur : ${err.message}`;
-                    }
-                    resultats.push({ type: "tool_result", tool_use_id: bloc.id, content: contenu });
+                if (bloc.type !== "tool_use") continue;
+                console.log(`  → ${bloc.name}(${JSON.stringify(bloc.input)})`);
+
+                // La fiche est prête : on la renvoie au navigateur, fin de l'agent
+                if (bloc.name === "remplir_fiche") {
+                    const fiche = { ...bloc.input };
+                    if (!fiche.siteCarriere) fiche.siteCarriere = url;
+                    return res.json({ fiche });
                 }
+
+                let contenu;
+                try {
+                    contenu = await executerOutil(bloc.name, bloc.input);
+                } catch (err) {
+                    contenu = `Erreur : ${err.message}`;
+                }
+                resultats.push({ type: "tool_result", tool_use_id: bloc.id, content: contenu });
             }
             messages.push({ role: "user", content: resultats });
         }
