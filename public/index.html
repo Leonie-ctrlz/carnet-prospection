@@ -33,6 +33,7 @@
         <option value="accepte">Accepté</option>
 
       </select>
+      <button type="button" id="btnAgent">✨ Depuis une offre</button>
       <button type="button" id="btnImport">Importer</button>
       <button id="btnNew" class="primary">+ Nouveau contact</button>
     </section>
@@ -167,6 +168,23 @@
     <div class="modal-actions">
       <button type="button" id="btnImportCancel">Annuler</button>
       <button type="button" id="btnImportGo" class="primary">Importer</button>
+    </div>
+  </div>
+</div>
+<div class="overlay hidden" id="agentOverlay">
+  <div class="modal">
+    <h2>Ajouter depuis une offre</h2>
+    <p>Colle le lien d'une offre : l'agent la lit et prépare la fiche. Tu pourras tout vérifier avant d'enregistrer.</p>
+
+    <div class="field">
+      <input type="url" id="agentUrl" placeholder="https://...">
+    </div>
+
+    <p id="agentStatut"></p>
+
+    <div class="modal-actions">
+      <button type="button" id="btnAgentCancel">Annuler</button>
+      <button type="button" id="btnAgentGo" class="primary">Lancer l'agent</button>
     </div>
   </div>
 </div>

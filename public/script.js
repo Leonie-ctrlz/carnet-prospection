@@ -133,6 +133,7 @@ function openModal(contact){
     document.getElementById("fRelance").value = contact.dateRelance || "";
   }else{
     editingId = null;
+    document.getElementById("contactForm").reset();
     document.getElementById("modalTitle").textContent = "Nouveau contact";
   }
   overlay.classList.remove("hidden");
@@ -278,6 +279,66 @@ document.getElementById("contactForm").addEventListener("submit", async function
    document.getElementById("contactForm").reset();
 
 });
+
+  // ===== Agent IA : ajout depuis une offre =====
+  const agentOverlay = document.getElementById("agentOverlay");
+  const agentStatut = document.getElementById("agentStatut");
+  const btnAgentGo = document.getElementById("btnAgentGo");
+
+  function fermerAgent(){
+    agentOverlay.classList.add("hidden");
+    document.getElementById("agentUrl").value = "";
+    agentStatut.textContent = "";
+  }
+
+  document.getElementById("btnAgent").addEventListener("click", function(){
+    agentOverlay.classList.remove("hidden");
+    document.getElementById("agentUrl").focus();
+  });
+
+  document.getElementById("btnAgentCancel").addEventListener("click", fermerAgent);
+
+  btnAgentGo.addEventListener("click", async function(){
+    const url = document.getElementById("agentUrl").value.trim();
+    if(!url){
+      agentStatut.textContent = "Colle d'abord un lien.";
+      return;
+    }
+
+    btnAgentGo.disabled = true;
+    agentStatut.textContent = "L'agent lit l'offre… (quelques secondes)";
+
+    try{
+      const reponse = await fetch("/api/agent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url })
+      });
+      const data = await reponse.json();
+
+      if(!reponse.ok){
+        agentStatut.textContent = "Erreur : " + data.erreur;
+        return;
+      }
+
+      // Valeurs par défaut + ce que l'agent a trouvé
+      const contact = {
+        priorite: 2, entreprise: "", ville: "", recruteur: "", siteCarriere: "",
+        email: "", telephone: "", linkedin: "",
+        cv: false, portfolio: false, github: false, modeEnvoi: "email",
+        statut: "a_contacter", dateRelance: "",
+        ...data.fiche
+      };
+
+      fermerAgent();
+      openModal(contact);
+      document.getElementById("modalTitle").textContent = "Nouveau contact (proposé par l'agent)";
+    }catch(err){
+      agentStatut.textContent = "Impossible de joindre le serveur. Est-il bien lancé ?";
+    }finally{
+      btnAgentGo.disabled = false;
+    }
+  });
 
 async function init(){
   await loadContacts();
