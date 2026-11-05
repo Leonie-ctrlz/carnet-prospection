@@ -26,7 +26,15 @@ const outils = [
 
 // 2. Le vrai code de l'outil, exécuté par TON serveur
 async function lirePage(url) {
-    const reponse = await fetch(url, { signal: AbortSignal.timeout(10000) });
+    const reponse = await fetch(url, {
+        signal: AbortSignal.timeout(10000),
+        headers: {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0 Safari/537.36",
+            "Accept-Language": "fr-FR,fr;q=0.9"
+        }
+    });
+    console.log(`  ← statut ${reponse.status}`);
+
     if (!reponse.ok) return `Erreur : la page a répondu ${reponse.status}`;
 
     const html = await reponse.text();
@@ -37,6 +45,7 @@ async function lirePage(url) {
         .replace(/\s+/g, " ")
         .trim();
 
+    console.log(`  ← ${texte.length} caractères récupérés`);
     return texte.slice(0, 15000);
 }
 
